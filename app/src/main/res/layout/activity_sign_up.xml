@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="@string/sign_up"
+        android:textStyle="bold"
+        android:textColor="#1e3a8a"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/editFirstName"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/textView"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="@string/first_name"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/editLastName"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/textView"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@id/editFirstName"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/last_name"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/editTextPhone"
+        android:layout_width="365dp"
+        android:layout_height="60dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/phone_number"
+        android:inputType="phone"
+        android:textColorHint="#757575"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/editFirstName"
+        android:layout_marginEnd="10dp"
+        android:layout_alignStart="@id/editFirstName"
+        />
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="365dp"
+        android:layout_height="60dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/email_address"
+        android:inputType="textEmailAddress"
+        android:textColorHint="#757575"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@id/editTextPhone"
+        android:layout_alignStart="@id/editFirstName" />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="365dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/editTextEmail"
+        android:layout_alignStart="@id/editFirstName"
+        android:layout_marginEnd="10dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:textColorHint="#757575" />
+
+    <EditText
+        android:id="@+id/editTextRePassword"
+        android:layout_width="365dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/editTextPassword"
+        android:layout_alignStart="@id/editFirstName"
+        android:layout_marginEnd="10dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/confirm_password"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:textColorHint="#757575" />
+
+    <TextView
+        android:id="@+id/textViewPasswordInstruction"
+        android:layout_width="365dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextRePassword"
+        android:layout_alignStart="@id/editFirstName"
+        android:layout_marginTop="15dp"
+        android:text="@string/a_valid_password_has_at_least_8_characters_and_includes_at_lease_one_uppercase_letter_one_lowercase_letter_one_number_and_one_special_character"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/btnCreateAccount"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewPasswordInstruction"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#60a5fa"
+        android:text="@string/create_account"
+        android:textSize="25sp" />
+
+
+</RelativeLayout>

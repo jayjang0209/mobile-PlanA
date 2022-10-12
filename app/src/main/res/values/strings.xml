@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">PlanA</string>
+    <string name="sign_in">Sign in</string>
+    <string name="plana">PlanA</string>
+    <string name="sign_up">Sign up</string>
+    <string name="account_exist">Already have an account?</string>
+    <string name="account_not_exist">Do not have an account yet?</string>
+
+
+    <string name="constraint_layout">Constraint Layout</string>
+    <string name="relative_layout">Relative Layout</string>
+    <string name="linear_layout">Linear Layout</string>
+    <string name="grid_layout">Grid Layout</string>
+    <string name="table_layout">Table Layout</string>
+    <string name="registration">Registration</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="a_valid_password_has_at_least_8_characters_and_includes_at_lease_one_uppercase_letter_one_lowercase_letter_one_number_and_one_special_character">A valid password has at least 8 characters and includes at lease one uppercase letter, one lowercase letter, one number and one special character.</string>
+    <string name="create_account">Create Account</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_maps">MapsActivity</string>
+</resources>
