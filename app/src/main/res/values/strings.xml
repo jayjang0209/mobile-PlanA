@@ -19,8 +19,16 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="phone_number">Phone Number</string>
-    <string name="a_valid_password_has_at_least_8_characters_and_includes_at_lease_one_uppercase_letter_one_lowercase_letter_one_number_and_one_special_character">A valid password has at least 8 characters and includes at lease one uppercase letter, one lowercase letter, one number and one special character.</string>
+    <string name="password_rule">A valid password has at least 8 characters and includes at lease one uppercase letter, one lowercase letter, one number and one special character.</string>
     <string name="create_account">Create Account</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_maps">MapsActivity</string>
+
+
+    <string-array name="connectors">
+        <item>J1772</item>
+        <item>SAE CCS</item>
+        <item>CHAdeMO</item>
+        <item>Tesla</item>
+    </string-array>
 </resources>
