@@ -15,7 +15,7 @@ public class SignIn extends AppCompatActivity {
 
         Button authenticate = findViewById(R.id.btnSignIn);
         authenticate.setOnClickListener(view -> {
-            Intent intent = new Intent(this, Map.class);
+            Intent intent = new Intent(this, EvCharger.class);
             startActivity(intent);
         });
     }
