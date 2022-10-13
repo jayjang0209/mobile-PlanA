@@ -108,7 +108,7 @@
         android:layout_below="@id/editTextRePassword"
         android:layout_alignStart="@id/editFirstName"
         android:layout_marginTop="15dp"
-        android:text="@string/a_valid_password_has_at_least_8_characters_and_includes_at_lease_one_uppercase_letter_one_lowercase_letter_one_number_and_one_special_character"
+        android:text="@string/password_rule"
         android:textSize="15sp" />
 
     <Button
