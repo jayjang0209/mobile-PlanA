@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -53,9 +52,10 @@ public class Map extends Fragment {
 
             databaseReference = firebaseDatabase.getReference();
 
+            // Access to the Realtime database
             databaseReference.child("EvCharingStations").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     int numStations = 0;
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         numStations += 1;
@@ -87,7 +87,7 @@ public class Map extends Fragment {
                 }
             });
 
-
+            // Initial map camera coordinate
             LatLng bcit = new LatLng(49.28357705407709, -123.11451451191841);
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(bcit));
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(bcit, 12));
