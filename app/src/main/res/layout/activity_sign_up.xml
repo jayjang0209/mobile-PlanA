@@ -43,21 +43,6 @@
         android:inputType="textPersonName" />
 
     <EditText
-        android:id="@+id/editTextPhone"
-        android:layout_width="365dp"
-        android:layout_height="60dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/phone_number"
-        android:inputType="phone"
-        android:textColorHint="#757575"
-        android:layout_marginTop="15dp"
-        android:layout_below="@id/editFirstName"
-        android:layout_marginEnd="10dp"
-        android:layout_alignStart="@id/editFirstName"
-        />
-
-    <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="365dp"
         android:layout_height="60dp"
@@ -68,7 +53,7 @@
         android:textColorHint="#757575"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
-        android:layout_below="@id/editTextPhone"
+        android:layout_below="@id/editFirstName"
         android:layout_alignStart="@id/editFirstName" />
 
     <EditText
@@ -117,10 +102,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewPasswordInstruction"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:backgroundTint="#60a5fa"
         android:text="@string/create_account"
-        android:textSize="25sp" />
+        android:textSize="15sp" />
 
 
 </RelativeLayout>
