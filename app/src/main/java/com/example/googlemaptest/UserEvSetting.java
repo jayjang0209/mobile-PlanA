@@ -26,7 +26,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class UserEvSetting extends AppCompatActivity {
-//https://stackoverflow.com/questions/1625249/android-how-to-bind-spinner-to-custom-object-list
     TextView numObject;
     TextView manufacturer;
     TextView model;
@@ -43,7 +42,6 @@ public class UserEvSetting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_ev_setting);
 
-        Log.i("here", "hello");
         numObject = findViewById(R.id.numDataObject);
         manufacturer = findViewById(R.id.manufacturer);
         model = findViewById(R.id.model);
@@ -51,7 +49,6 @@ public class UserEvSetting extends AppCompatActivity {
         evSpinner = (Spinner) findViewById(R.id.evSpinner);
         evs = new ArrayList<>();
 
-        numObject.setText("Test!!");
         UserEvSetting.AsyncTaskRunner runner = new UserEvSetting.AsyncTaskRunner();
         String modelYear = "2022";
         // Sample Endpoint
@@ -73,12 +70,13 @@ public class UserEvSetting extends AppCompatActivity {
                 public void onResponse(JSONObject response) {
                     try {
                         Log.d("Response", response.toString());
+                        // get the total number of Evs
                         JSONObject jsonObjectCount = response.getJSONObject("metadata");
                         Log.d("Response-result", jsonObjectCount.toString());
                         String numberOfObject = jsonObjectCount.getJSONObject("resultset").getString("count");
                         numObject.setText("number of models: " + numberOfObject);
                         JSONArray jsonArrayEvs = response.getJSONArray("result");
-                        Log.d("Response-evs", String.valueOf(jsonArrayEvs.length()));
+                        Log.d("Response-total-evs-number", String.valueOf(jsonArrayEvs.length()));
 
                         // add elements in json array to spinner
                         for (int i = 0; i < jsonArrayEvs.length(); i++) {
@@ -87,25 +85,28 @@ public class UserEvSetting extends AppCompatActivity {
                             String model = jsonObject.getString("model");
                             String model_year = jsonObject.getString("model_year");
                             String range = jsonObject.getString("electric_range");
-                            String ev_info = i + make + " " + model + " " + model_year + " " + range;
-                            Log.d("Response-ev", ev_info);
+                            // Instantiate single Ev object
                             Ev ev = new Ev();
                             ev.setManufacturer(make);
                             ev.setModel(model);
                             ev.setYear(model_year);
                             ev.setRange(range);
+                            // Add to the ArrayList
                             evs.add(ev);
                         }
 
+                        // Add ArrayAdapter with the list of Evs to Spinner
                         ArrayAdapter<Ev> data = new ArrayAdapter<>(UserEvSetting.this, android.R.layout.simple_spinner_item, evs);
                         data.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         evSpinner.setAdapter(data);
+                        // Add selected listener
                         evSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                // Get the String representation of the selected item
+                                // Get the Ev Object representation of the selected item
                                 Ev ev = (Ev) parent.getItemAtPosition(position);
+                                // set textViews
                                 manufacturer.setText(ev.getManufacturer());
                                 model.setText(ev.getModel());
                                 evRange.setText(String.valueOf((int) ev.getRange()));
