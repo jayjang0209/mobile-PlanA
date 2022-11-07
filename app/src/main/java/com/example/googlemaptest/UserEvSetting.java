@@ -28,10 +28,11 @@ import java.util.ArrayList;
 public class UserEvSetting extends AppCompatActivity {
 //https://stackoverflow.com/questions/1625249/android-how-to-bind-spinner-to-custom-object-list
     TextView numObject;
-    Spinner evSpinner;
-    ArrayList<String> evs;
+    TextView manufacturer;
+    TextView model;
     TextView evRange;
-
+    Spinner evSpinner;
+    ArrayList<Ev> evs;
 
     private final String url = "https://developer.nrel.gov/api/vehicles/v1/light_duty_automobiles.json";
     private final String key = "oeesoXp4Qsx0c1ceqlKtbrFEB7yRujpaTakm9Zul";
@@ -44,8 +45,10 @@ public class UserEvSetting extends AppCompatActivity {
 
         Log.i("here", "hello");
         numObject = findViewById(R.id.numDataObject);
+        manufacturer = findViewById(R.id.manufacturer);
+        model = findViewById(R.id.model);
+        evRange =findViewById(R.id.range);
         evSpinner = (Spinner) findViewById(R.id.evSpinner);
-        evRange =findViewById(R.id.textRange);
         evs = new ArrayList<>();
 
         numObject.setText("Test!!");
@@ -73,7 +76,7 @@ public class UserEvSetting extends AppCompatActivity {
                         JSONObject jsonObjectCount = response.getJSONObject("metadata");
                         Log.d("Response-result", jsonObjectCount.toString());
                         String numberOfObject = jsonObjectCount.getJSONObject("resultset").getString("count");
-                        numObject.setText(numberOfObject);
+                        numObject.setText("number of models: " + numberOfObject);
                         JSONArray jsonArrayEvs = response.getJSONArray("result");
                         Log.d("Response-evs", String.valueOf(jsonArrayEvs.length()));
 
@@ -84,12 +87,36 @@ public class UserEvSetting extends AppCompatActivity {
                             String model = jsonObject.getString("model");
                             String model_year = jsonObject.getString("model_year");
                             String range = jsonObject.getString("electric_range");
-                            String ev = i + make + " " + model + " " + model_year + " " + range;
-                            Log.d("Response-ev", ev);
-
-                            evs.add(make + "-" + model);
+                            String ev_info = i + make + " " + model + " " + model_year + " " + range;
+                            Log.d("Response-ev", ev_info);
+                            Ev ev = new Ev();
+                            ev.setManufacturer(make);
+                            ev.setModel(model);
+                            ev.setYear(model_year);
+                            ev.setRange(range);
+                            evs.add(ev);
                         }
 
+                        ArrayAdapter<Ev> data = new ArrayAdapter<>(UserEvSetting.this, android.R.layout.simple_spinner_item, evs);
+                        data.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        evSpinner.setAdapter(data);
+                        evSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                // Get the String representation of the selected item
+                                Ev ev = (Ev) parent.getItemAtPosition(position);
+                                manufacturer.setText(ev.getManufacturer());
+                                model.setText(ev.getModel());
+                                evRange.setText(String.valueOf((int) ev.getRange()));
+                            }
+
+                            // Override the onNothingSelected method defined in AdapterView.OnItemSelectedListener
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                                Toast.makeText(getApplicationContext(), "Please select ev", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
                     } catch (JSONException e) {
                         e.printStackTrace();
