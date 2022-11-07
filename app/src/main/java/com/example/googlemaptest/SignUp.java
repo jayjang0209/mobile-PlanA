@@ -1,14 +1,99 @@
 package com.example.googlemaptest;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUp extends AppCompatActivity {
+    private EditText edtFirstName, edtLastName, edtPassword, edtEmail, edtConfirmPassword;
+    private String firstName;
+    private String lastName;
+    private String password;
+    private String email;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        // get the instance of the Firebase database
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        // get the reference to the JSON tree
+        databaseReference = firebaseDatabase.getReference();
+
+        edtFirstName = findViewById(R.id.editFirstName);
+        edtLastName = findViewById(R.id.editLastName);
+        edtEmail = findViewById(R.id.editTextEmail);
+        edtPassword = findViewById(R.id.editTextPassword);
+        edtConfirmPassword = findViewById(R.id.editTextRePassword);
+
+        Button btnSignup = findViewById(R.id.btnCreateAccount);
+
+        btnSignup.setOnClickListener(view -> {
+            if (checkFields()) {
+                addData();
+            }
+        });
+    }
+
+    private boolean checkFields() {
+        firstName = edtFirstName.getText().toString().trim();
+        lastName = edtLastName.getText().toString().trim();
+        email = edtEmail.getText().toString().trim();
+        password = edtPassword.getText().toString().trim();
+        String confirmPassword = edtConfirmPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(firstName)) {
+            Toast.makeText(this, "Please enter a first name", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(lastName)) {
+            Toast.makeText(this, "Please enter a last name", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Please enter a last name", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter a password", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(confirmPassword)) {
+            Toast.makeText(this, "Please confirm the password", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (!password.equals(confirmPassword)) {
+            Toast.makeText(this, "Please re-enter to confirm the password", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void addData() {
+        // use push method to generate a unique key for a new child node
+        String id = databaseReference.push().getKey();
+        writeNewUser(id);
+    }
+
+    private void writeNewUser(String id) {
+        String username = firstName + lastName;
+        User user = new User(username, password, email);
+        databaseReference.child("Users").child(id).setValue(user)
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(SignUp.this, "Account created", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(this, SignIn.class);
+                    startActivity(intent);
+                })
+                .addOnFailureListener(e -> Toast.makeText(SignUp.this, e.toString(), Toast.LENGTH_LONG).show());
     }
 }
