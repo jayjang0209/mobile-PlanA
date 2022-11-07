@@ -10,6 +10,8 @@ import android.widget.Button;
 
 public class EvCharger extends AppCompatActivity {
 
+    public EvCharger() {}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

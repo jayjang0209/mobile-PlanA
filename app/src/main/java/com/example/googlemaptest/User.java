@@ -1,19 +1,16 @@
 package com.example.googlemaptest;
 
 public class User {
-    private String username;
+    private String name;
     private String password;
     private String email;
 
-    public User(String name, String password, String email) {
-        this.username = name;
-        this.password = password;
-        this.email = email;
+    public User() {
     }
 
-    public String getUsername() {return username;}
+    public String getName() {return name;}
 
-    public void setUsername(String username) {this.username = username;}
+    public void setName(String name) {this.name = name;}
 
     public String getPassword() {return password;}
 

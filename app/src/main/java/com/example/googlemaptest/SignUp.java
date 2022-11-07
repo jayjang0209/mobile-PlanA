@@ -20,6 +20,8 @@ public class SignUp extends AppCompatActivity {
     private String email;
     private DatabaseReference databaseReference;
 
+    public SignUp() {}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,8 +88,11 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void writeNewUser(String id) {
-        String username = firstName + lastName;
-        User user = new User(username, password, email);
+        String name = firstName + lastName;
+        User user = new User();
+        user.setEmail(email);
+        user.setName(name);
+        user.setPassword(password);
         databaseReference.child("Users").child(id).setValue(user)
                 .addOnSuccessListener(unused -> {
                     Toast.makeText(SignUp.this, "Account created", Toast.LENGTH_LONG).show();
