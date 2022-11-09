@@ -38,12 +38,7 @@ public class SignIn extends AppCompatActivity {
         edtPassword = findViewById(R.id.editTextPassword);
 
         Button login = findViewById(R.id.btnSignIn);
-        login.setOnClickListener(view -> {
-            login();
-            Intent intent = new Intent(this, EvCharger.class);
-            startActivity(intent);
-        }
-);
+        login.setOnClickListener(view -> login());
 
         TextView signUp = findViewById(R.id.goToSignUP);
         signUp.setOnClickListener(view -> {
@@ -64,7 +59,11 @@ public class SignIn extends AppCompatActivity {
                 boolean match = false;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
+
                     if (user != null && email.equals(user.getEmail()) && password.equals(user.getPassword())) {
+                        System.out.println("Typed in: " + email + password);
+                        System.out.println("Searched: " + user.getEmail() + user.getPassword());
+
                         match = true;
                         Toast.makeText(SignIn.this, "Logged In!", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(SignIn.this, EvCharger.class);

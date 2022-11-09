@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ public class SignUp extends AppCompatActivity {
     private String password;
     private String email;
     private DatabaseReference databaseReference;
+    private Button btnSignup;
 
     public SignUp() {}
 
@@ -38,13 +40,7 @@ public class SignUp extends AppCompatActivity {
         edtPassword = findViewById(R.id.editTextPassword);
         edtConfirmPassword = findViewById(R.id.editTextRePassword);
 
-        Button btnSignup = findViewById(R.id.btnCreateAccount);
-
-        btnSignup.setOnClickListener(view -> {
-            if (checkFields()) {
-                addData();
-            }
-        });
+        isEVDriver();
     }
 
     private boolean checkFields() {
@@ -79,6 +75,31 @@ public class SignUp extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void isEVDriver() {
+        CheckBox checkBox = findViewById(R.id.is_ev_driver);
+        btnSignup = findViewById(R.id.btnCreateAccount);
+
+        checkBox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if (isChecked) {
+                if (checkFields()) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("firstName", firstName);
+                    bundle.putString("lastName", lastName);
+                    bundle.putString("email", email);
+                    bundle.putString("password", password);
+                    // ADD EV DETAIL INPUT PAGE ========
+                }
+            } else {
+                btnSignup.setText(R.string.create_account);
+                btnSignup.setOnClickListener(view -> {
+                    if (checkFields()) {
+                        addData();
+                    }
+                });
+            }
+        });
     }
 
     private void addData() {

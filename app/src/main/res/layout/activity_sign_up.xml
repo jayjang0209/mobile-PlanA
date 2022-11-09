@@ -103,18 +103,28 @@
         android:layout_alignStart="@id/editFirstName"
         android:layout_marginTop="15dp"
         android:text="@string/password_rule"
-        android:textSize="15sp" />
+        android:textSize="13sp" />
+
+    <CheckBox
+        android:id="@+id/is_ev_driver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/my_car_is_an_ev"
+        android:layout_below="@id/textViewPasswordInstruction"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:checked="true" />
 
     <Button
         android:id="@+id/btnCreateAccount"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewPasswordInstruction"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
+        android:paddingHorizontal="40dp"
         android:backgroundTint="#60a5fa"
-        android:text="@string/create_account"
+        android:text="@string/next"
         android:textSize="15sp" />
-
 
 </RelativeLayout>
