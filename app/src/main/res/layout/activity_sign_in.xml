@@ -3,33 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/plana_logo"
+        android:src="@drawable/logo_light_transbg" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/imageView2"
         android:text="@string/sign_in"
         android:textStyle="bold"
         android:textColor="#1e3a8a"
         android:textSize="30sp" />
 
-
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="365dp"
         android:layout_height="60dp"
+        android:layout_below="@id/textView"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/email_address"
         android:inputType="textEmailAddress"
-        android:textColorHint="#757575"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_below="@id/textView"/>
+        android:textColorHint="#757575" />
 
     <EditText
         android:id="@+id/editTextPassword"
