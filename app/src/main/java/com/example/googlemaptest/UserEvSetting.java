@@ -2,12 +2,14 @@ package com.example.googlemaptest;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +58,12 @@ public class UserEvSetting extends AppCompatActivity {
         String endPoint = url + "?api_key=" + key + "&current=true&fuel_id=" + fuel_id + "&model_year=" + modelYear;
         Log.i("endpoint", endPoint);
         runner.execute(endPoint);
+
+        Button authenticate = findViewById(R.id.btnEvTripPlanner);
+        authenticate.setOnClickListener(view -> {
+            Intent intent = new Intent(this, EvTripPlanner.class);
+            startActivity(intent);
+        });
 
     }
 
