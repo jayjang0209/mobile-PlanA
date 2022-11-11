@@ -5,53 +5,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="20dp"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView3"
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar" />
+
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center">-->
+
+<!--        <Button-->
+<!--            android:id="@+id/buttonFragmentMap"-->
+<!--            android:layout_width="170dp"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:text="@string/map_fragment_button"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:backgroundTint="@color/main_light_blue"-->
+<!--            style="?android:attr/buttonBarButtonStyle" />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/buttonFragmentList"-->
+<!--            android:layout_width="170dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_marginStart="15dp"-->
+<!--            android:text="@string/connector_list"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:backgroundTint="@color/main_light_blue"-->
+<!--            style="?android:attr/buttonBarButtonStyle" />-->
+
+<!--    </LinearLayout>-->
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:padding="20dp"
-        android:textStyle="bold"
-        android:text="@string/ev_chargers" />
+        android:layout_height="match_parent">
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/ctnFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonFragmentList" />
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/header"
+            app:menu="@menu/menu" />
+    </androidx.drawerlayout.widget.DrawerLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/buttonFragmentMap"
-            android:layout_width="170dp"
-            android:layout_marginStart="10dp"
-            android:layout_height="50dp"
-            android:text="@string/map_fragment_button"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/main_light_blue"
-            style="?android:attr/buttonBarButtonStyle" />
-
-        <Button
-            android:id="@+id/buttonFragmentList"
-            android:layout_width="170dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="15dp"
-            android:text="@string/connector_list"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/main_light_blue"
-            style="?android:attr/buttonBarButtonStyle" />
-
-    </LinearLayout>
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/ctnFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonFragmentList" />
 
 </LinearLayout>
