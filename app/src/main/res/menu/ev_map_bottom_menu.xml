@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/ev_map_menu_map"
+        android:title="Map"
+        android:icon="@drawable/ic_map" />
+
+    <item
+        android:id="@+id/ev_map_menu_plan"
+        android:title="Plan"
+        android:icon="@drawable/ic_list_bulleted" />
+
+    <item
+        android:id="@+id/ev_map_menu_ev"
+        android:title="Your EV"
+        android:icon="@drawable/ic_ev" />
+
+    <item
+        android:id="@+id/ev_map_menu_share"
+        android:title="Share"
+        android:icon="@drawable/ic_share" />
+</menu>
