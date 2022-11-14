@@ -2,12 +2,14 @@ package com.example.googlemaptest;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +20,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,12 +30,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class UserEvSetting extends AppCompatActivity {
-    TextView numObject;
-    TextView manufacturer;
-    TextView model;
-    TextView evRange;
-    Spinner evSpinner;
-    ArrayList<Ev> evs;
+    private TextView numObject;
+    private TextView manufacturer;
+    private TextView model;
+    private TextView evRange;
+    private Spinner evSpinner;
+    private ArrayList<Ev> evs;
+    private Ev ev;
+    private DatabaseReference databaseReference;
+    private String name;
+    private String email;
+    private String password;
+    private User user;
 
     private final String url = "https://developer.nrel.gov/api/vehicles/v1/light_duty_automobiles.json";
     private final String key = "oeesoXp4Qsx0c1ceqlKtbrFEB7yRujpaTakm9Zul";
@@ -56,6 +66,22 @@ public class UserEvSetting extends AppCompatActivity {
         String endPoint = url + "?api_key=" + key + "&current=true&fuel_id=" + fuel_id + "&model_year=" + modelYear;
         Log.i("endpoint", endPoint);
         runner.execute(endPoint);
+
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("bundle");
+
+        name = bundle.getString("name");
+        email = bundle.getString("email");
+        password = bundle.getString("password");
+
+        user = new User();
+        user.setEmail(email);
+        user.setName(name);
+        user.setPassword(password);
 
     }
 
@@ -90,7 +116,7 @@ public class UserEvSetting extends AppCompatActivity {
                             ev.setManufacturer(make);
                             ev.setModel(model);
                             ev.setYear(model_year);
-                            ev.setRange(range);
+                            ev.setRange(Double.parseDouble(range));
                             // Add to the ArrayList
                             evs.add(ev);
                         }
@@ -105,11 +131,13 @@ public class UserEvSetting extends AppCompatActivity {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 // Get the Ev Object representation of the selected item
-                                Ev ev = (Ev) parent.getItemAtPosition(position);
+                                ev = (Ev) parent.getItemAtPosition(position);
                                 // set textViews
                                 manufacturer.setText(ev.getManufacturer());
                                 model.setText(ev.getModel());
                                 evRange.setText(String.valueOf((int) ev.getRange()));
+
+                                addData();
                             }
 
                             // Override the onNothingSelected method defined in AdapterView.OnItemSelectedListener
@@ -132,5 +160,24 @@ public class UserEvSetting extends AppCompatActivity {
             queue.add(request);
             return null;
         }
+    }
+
+    private void addData() {
+        Button btnCreateAccount = findViewById(R.id.btnCreateEVDriverAccount);
+        btnCreateAccount.setOnClickListener(view -> {
+            String id = databaseReference.push().getKey();
+            writeNewUser(id);
+        });
+    }
+
+    private void writeNewUser(String id) {
+        user.setEv(ev);
+        databaseReference.child("Users").child(id).setValue(user)
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(UserEvSetting.this, "Account created", Toast.LENGTH_LONG).show();
+                    Intent signInIntent = new Intent(this, SignIn.class);
+                    startActivity(signInIntent);
+                })
+                .addOnFailureListener(e -> Toast.makeText(UserEvSetting.this, e.toString(), Toast.LENGTH_LONG).show());
     }
 }
