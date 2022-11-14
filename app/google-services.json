@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "906759026105",
+    "firebase_url": "https://plana-16c0c-default-rtdb.firebaseio.com",
+    "project_id": "plana-16c0c",
+    "storage_bucket": "plana-16c0c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:906759026105:android:5dafd2a905ad1b6c023268",
+        "android_client_info": {
+          "package_name": "com.example.googlemaptest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "906759026105-eg8vo3a0f84cpois5p4imeu6qboct238.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAasXL5ur88QpQA12Xxd8lnkJtSAuM1Xpw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "906759026105-eg8vo3a0f84cpois5p4imeu6qboct238.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
