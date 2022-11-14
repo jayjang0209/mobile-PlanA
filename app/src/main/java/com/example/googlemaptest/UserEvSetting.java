@@ -68,7 +68,7 @@ public class UserEvSetting extends AppCompatActivity {
         runner.execute(endPoint);
 
 
-        Button authenticate = findViewById(R.id.btnEvTripPlanner);
+        Button authenticate = findViewById(R.id.btnCreateEVDriverAccount);
         authenticate.setOnClickListener(view -> {
             Intent intent = new Intent(this, EvTripPlanner.class);
             startActivity(intent);
