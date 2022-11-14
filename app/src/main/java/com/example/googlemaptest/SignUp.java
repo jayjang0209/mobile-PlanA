@@ -17,10 +17,12 @@ public class SignUp extends AppCompatActivity {
     private EditText edtFirstName, edtLastName, edtPassword, edtEmail, edtConfirmPassword;
     private String firstName;
     private String lastName;
+    private String name;
     private String password;
     private String email;
     private DatabaseReference databaseReference;
     private Button btnSignup;
+    private Bundle bundle;
 
     public SignUp() {}
 
@@ -83,15 +85,21 @@ public class SignUp extends AppCompatActivity {
 
         checkBox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
-                if (checkFields()) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("firstName", firstName);
-                    bundle.putString("lastName", lastName);
-                    bundle.putString("email", email);
-                    bundle.putString("password", password);
-                    // ADD EV DETAIL INPUT PAGE ========
-                }
-            } else {
+                btnSignup.setText(R.string.next);
+                btnSignup.setOnClickListener(view -> {
+                    if (checkFields()) {
+                        Intent intent = new Intent(this, UserEvSetting.class);
+                        bundle = new Bundle();
+                        name = firstName + " " + lastName;
+                        bundle.putString("name", name);
+                        bundle.putString("email", email);
+                        bundle.putString("password", password);
+                        intent.putExtra("bundle", bundle);
+                        startActivity(intent);
+                    }
+                });
+            }
+            if (!isChecked) {
                 btnSignup.setText(R.string.create_account);
                 btnSignup.setOnClickListener(view -> {
                     if (checkFields()) {
@@ -109,7 +117,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void writeNewUser(String id) {
-        String name = firstName + lastName;
+        name = firstName + " " + lastName;
         User user = new User();
         user.setEmail(email);
         user.setName(name);

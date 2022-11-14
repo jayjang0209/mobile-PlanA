@@ -112,8 +112,7 @@
         android:text="@string/my_car_is_an_ev"
         android:layout_below="@id/textViewPasswordInstruction"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="30dp"
-        android:checked="true" />
+        android:layout_marginEnd="30dp" />
 
     <Button
         android:id="@+id/btnCreateAccount"
@@ -124,7 +123,7 @@
         android:layout_marginTop="40dp"
         android:paddingHorizontal="40dp"
         android:backgroundTint="#60a5fa"
-        android:text="@string/next"
+        android:text="@string/create_account"
         android:textSize="15sp" />
 
 </RelativeLayout>

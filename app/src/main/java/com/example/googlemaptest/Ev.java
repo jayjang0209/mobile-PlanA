@@ -38,9 +38,9 @@ public class Ev {
         return range;
     }
 
-    public void setRange(String range) {
+    public void setRange(double range) {
         // Convert miles to km
-        this.range = Integer.parseInt(range) * 1.60934;
+        this.range = range * 1.60934;
     }
 
     @Override

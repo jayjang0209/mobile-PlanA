@@ -4,6 +4,7 @@ public class User {
     private String name;
     private String password;
     private String email;
+    private Ev ev;
 
     public User() {
     }
@@ -19,4 +20,8 @@ public class User {
     public String getEmail() {return email;}
 
     public void setEmail(String email) {this.email = email;}
+
+    public Ev getEv() {return this.ev;}
+
+    public void setEv(Ev ev) { this.ev = ev; }
 }
