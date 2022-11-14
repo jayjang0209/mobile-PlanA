@@ -66,7 +66,7 @@ public class SignIn extends AppCompatActivity {
 
                         match = true;
                         Toast.makeText(SignIn.this, "Logged In!", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(SignIn.this, EvCharger.class);
+                        Intent intent = new Intent(SignIn.this, EvTripPlanner.class);
                         startActivity(intent);
                     }
                 }
