@@ -35,6 +35,9 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".LandingPage"
+            android:exported="false" />
+        <activity
             android:name=".EvCharger"
             android:exported="true" />
         <activity
