@@ -22,13 +22,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Button toSignUp = findViewById(R.id.buttonSignUp);
-
         toSignUp.setOnClickListener(view -> {
             Intent intent = new Intent(this, SignUp.class);
             startActivity(intent);
         });
     }
-
-
-
 }

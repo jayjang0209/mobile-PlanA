@@ -22,6 +22,8 @@ public class EvCharger extends AppCompatActivity implements NavigationView.OnNav
     NavigationView navigationView;
     Toolbar toolbar;
 
+    public EvCharger() {}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

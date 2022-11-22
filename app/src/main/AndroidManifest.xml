@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.googlemaptest">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +15,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GoogleMapTest"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
+        <activity
+            android:name=".EvTripPlanner"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".UserEvSetting"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".LandingPage"
             android:exported="false" />
@@ -25,11 +46,6 @@
         <activity
             android:name=".SignIn"
             android:exported="false" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDeJiYUT5UQD4IJSiiwv6zf5sdGU8VfpWM" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
