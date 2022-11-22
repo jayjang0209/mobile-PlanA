@@ -27,6 +27,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -38,6 +39,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -51,6 +54,7 @@ public class MapEv extends Fragment implements OnMapReadyCallback, GoogleMap.OnM
     ImageView imageViewSearch;
     EditText locationInput;
     GoogleMap googleMapRef;
+    ArrayList<Circle> circles;
 
 
     @Nullable
@@ -89,9 +93,11 @@ public class MapEv extends Fragment implements OnMapReadyCallback, GoogleMap.OnM
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(bcit, 12));
 
         googleMapRef = googleMap;
+        circles = new ArrayList<>();
 
         googleMap.setOnMarkerClickListener(this);
 
+        // Set onclick listener to search place button
         imageViewSearch.setOnClickListener(view1 -> {
             String location = locationInput.getText().toString();
             if (location != null && !location.equals("")) {
@@ -155,18 +161,22 @@ public class MapEv extends Fragment implements OnMapReadyCallback, GoogleMap.OnM
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
         Toast.makeText(getContext(), marker.getTitle(), Toast.LENGTH_SHORT).show();
-//        googleMapRef.addCircle(new CircleOptions()
-//                .center(marker.getPosition())
-//                .radius(50000)
-//        );
         Log.i("Circle center", String.valueOf(marker.getPosition()));
+
+        // remove previous circles
+        for (Circle circle: circles) {
+            circle.remove();
+        }
+        circles.clear();
+
         // draw a circle around the marker
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(marker.getPosition());
         circleOptions.radius(DEFAULT_RANGE);
         circleOptions.strokeColor(getResources().getColor(R.color.main_light_blue));
         circleOptions.fillColor(0x30ff0000);
-        googleMapRef.addCircle(circleOptions);
+        Circle rangeCircle = googleMapRef.addCircle(circleOptions);
+        circles.add(rangeCircle);
         return false;
     }
 }
