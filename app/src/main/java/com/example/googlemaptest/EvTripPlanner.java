@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -12,11 +13,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class EvTripPlanner extends AppCompatActivity {
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ev_trip_planner);
+
+        // Get UserId
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
 
         BottomNavigationView bottomNavigationView= findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.ev_trip_planner_fragment_container, new MapEv()).commit();
