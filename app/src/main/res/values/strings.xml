@@ -43,4 +43,7 @@
 
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
+
+    <string name="search_hint">Where are you going to?</string>
+    <string name="save">Save</string>
 </resources>
