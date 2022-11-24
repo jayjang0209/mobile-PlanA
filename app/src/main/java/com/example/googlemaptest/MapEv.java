@@ -190,8 +190,9 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(marker.getPosition());
         circleOptions.radius(DEFAULT_RANGE);
-        circleOptions.strokeColor(0x20f24e1e);
-        circleOptions.fillColor(0x40f24e1e);
+        circleOptions.strokeColor(0xCC4c8bf5);
+        circleOptions.strokeWidth(10);
+        circleOptions.fillColor(0x4000A7E1);
         Circle rangeCircle = googleMapRef.addCircle(circleOptions);
         circles.add(rangeCircle);
         return false;
