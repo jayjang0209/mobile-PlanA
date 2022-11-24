@@ -1,5 +1,6 @@
 package com.example.googlemaptest;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -90,8 +91,26 @@ public class EvTripPlanner extends AppCompatActivity implements NavigationView.O
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.routes:
+                intent = new Intent(EvTripPlanner.this, SavedRoutes.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+                break;
+            case R.id.cities:
+                break;
+            case R.id.budget:
+                break;
+            case R.id.signOut:
+                intent = new Intent(EvTripPlanner.this, MainActivity.class);
+                startActivity(intent);
+                break;
+            default:
+        }
         return false;
     }
 
