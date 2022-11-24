@@ -2,13 +2,9 @@ package com.example.googlemaptest;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -21,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,6 +27,8 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,12 +37,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
-public class MapEv extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapEv extends Fragment implements OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener
+        ,GoogleMap.OnInfoWindowClickListener {
 
     public static final float DEFAULT_RANGE = 450000;
 
@@ -55,6 +52,11 @@ public class MapEv extends Fragment implements OnMapReadyCallback, GoogleMap.OnM
     EditText locationInput;
     GoogleMap googleMapRef;
     ArrayList<Circle> circles;
+    Bitmap chargerMarkerIcon;
+    Bitmap savedMarkerIcon;
+    ArrayList<LatLng> savedMarkers;
+    ArrayList<EvStation> savedEvStations;
+    Polyline mapPolyline;
 
 
     @Nullable
@@ -82,6 +84,15 @@ public class MapEv extends Fragment implements OnMapReadyCallback, GoogleMap.OnM
             mapFragment.getMapAsync(this);
         }
 
+        // Setup maker icons
+        BitmapDrawable bitmapdraw= (BitmapDrawable) getResources().getDrawable( R.drawable.ev_charing_station_icon);
+        Bitmap b = bitmapdraw.getBitmap();
+        chargerMarkerIcon = Bitmap.createScaledBitmap(b, 85, 85, false);
+        BitmapDrawable bitmapdrawSaved = (BitmapDrawable) getResources().getDrawable( R.drawable.ev_saved_marker_icon);
+        Bitmap bSaved = bitmapdrawSaved.getBitmap();
+        savedMarkerIcon = Bitmap.createScaledBitmap(bSaved, 85, 85, false);
+
+
         return view;
     }
 
@@ -94,8 +105,12 @@ public class MapEv extends Fragment implements OnMapReadyCallback, GoogleMap.OnM
 
         googleMapRef = googleMap;
         circles = new ArrayList<>();
+        savedMarkers = new ArrayList<>();
+        savedEvStations = new ArrayList<>();
+        mapPolyline = googleMap.addPolyline(new PolylineOptions());
 
         googleMap.setOnMarkerClickListener(this);
+        googleMap.setOnInfoWindowClickListener(this);
 
 //        // Set onclick listener to search place button
 //        imageViewSearch.setOnClickListener(view1 -> {
@@ -128,24 +143,26 @@ public class MapEv extends Fragment implements OnMapReadyCallback, GoogleMap.OnM
                 int numStations = 0;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     numStations += 1;
+
+                    // Get station information
                     double lat = Double.parseDouble(String.valueOf(snapshot.child("Latitude").getValue()));
                     double lon = Double.parseDouble(String.valueOf(snapshot.child("Longitude").getValue()));
                     String address = String.valueOf(snapshot.child("Street Address").getValue());
+                    String connectorType = String.valueOf(snapshot.child("EV Connector Types").getValue());
                     LatLng station = new LatLng(lat, lon);
-
-                    // Set the size of marker in map
-                    int height = 100;
-                    int width = 100;
-                    BitmapDrawable bitmapdraw= (BitmapDrawable) getResources().getDrawable( R.drawable.ev_charing_station_icon);
-                    Bitmap b = bitmapdraw.getBitmap();
-                    final Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+                    int chargerNumber;
+                    try {
+                        chargerNumber = Integer.parseInt(String.valueOf(snapshot.child("EV Level2 EVSE Num").getValue()));
+                    } catch (Exception e) {
+                        chargerNumber = Integer.parseInt(String.valueOf(snapshot.child("EV DC Fast Count").getValue()));
+                    }
 
                     // Add markers to the googleMap
                     Objects.requireNonNull(googleMap.addMarker(new MarkerOptions()
                                     .position(station)
-                                    .title(address)))
-                            .setIcon(BitmapDescriptorFactory.fromBitmap(smallMarker));
-//                        Log.i("lat", String.valueOf(lat));
+                                    .title(address)
+                                    .snippet("Connector: " + connectorType + '\n' + "Chargers: " + String.valueOf(chargerNumber))))
+                            .setIcon(BitmapDescriptorFactory.fromBitmap(chargerMarkerIcon));
                 }
                 Log.i("Stations", String.valueOf(numStations));
             }
@@ -173,10 +190,53 @@ public class MapEv extends Fragment implements OnMapReadyCallback, GoogleMap.OnM
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(marker.getPosition());
         circleOptions.radius(DEFAULT_RANGE);
-        circleOptions.strokeColor(getResources().getColor(R.color.main_light_blue));
-        circleOptions.fillColor(0x30ff0000);
+        circleOptions.strokeColor(0x20f24e1e);
+        circleOptions.fillColor(0x40f24e1e);
         Circle rangeCircle = googleMapRef.addCircle(circleOptions);
         circles.add(rangeCircle);
         return false;
+    }
+
+    @Override
+    public void onInfoWindowClick(@NonNull Marker marker) {
+        LatLng latLng = marker.getPosition();
+        String address = marker.getTitle();
+
+        if (savedMarkers.contains(marker.getPosition())) {
+            savedMarkers.remove(marker.getPosition());
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(chargerMarkerIcon));
+            drawPath();
+
+            savedEvStations.removeIf(e -> e.getAddress().equals(address));
+            Log.i("evStation", String.valueOf(savedMarkers.size()));
+        } else {
+            savedMarkers.add(marker.getPosition());
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(savedMarkerIcon));
+            drawPath();
+
+            // Add evStation object to the list.
+            EvStation evStation = new EvStation(latLng.latitude, latLng.latitude, address);
+            Log.i("evStation", evStation.toString());
+            savedEvStations.add(evStation);
+            Log.i("evStation", String.valueOf(savedMarkers.size()));
+        }
+        Toast.makeText(getActivity(), "infoWindow clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    public void drawPath() {
+        // remove previous polyline
+        mapPolyline.remove();
+
+        // re-draw polyline with updated points
+        mapPolyline = googleMapRef.addPolyline(new PolylineOptions()
+                .addAll(savedMarkers)
+        );
+        mapPolyline.setColor(getResources().getColor(R.color.main_light_blue));
+    }
+
+    public void saveStationsToDB() {
+        // evStation contains ( Double Double latitude, Double longitude,  String address)
+        // Feel free to change anything :)
+        ArrayList<EvStation> savedObjets = savedEvStations;
     }
 }
