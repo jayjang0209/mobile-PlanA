@@ -65,8 +65,8 @@ public class MapEv extends Fragment implements OnMapReadyCallback, GoogleMap.OnM
 
         View view = inflater.inflate(R.layout.fragment_map_ev, container, false);
 
-        imageViewSearch = view.findViewById(R.id.locationSearch);
-        locationInput = view.findViewById(R.id.locationInput);
+//        imageViewSearch = view.findViewById(R.id.locationSearch);
+//        locationInput = view.findViewById(R.id.locationInput);
 
 
         // get the instance of the Firebase database
@@ -97,27 +97,27 @@ public class MapEv extends Fragment implements OnMapReadyCallback, GoogleMap.OnM
 
         googleMap.setOnMarkerClickListener(this);
 
-        // Set onclick listener to search place button
-        imageViewSearch.setOnClickListener(view1 -> {
-            String location = locationInput.getText().toString();
-            if (location != null && !location.equals("")) {
-                List<Address> addressList = null;
-                Geocoder geocoder = new Geocoder(getActivity());
-                try {
-                    addressList = geocoder.getFromLocationName(location, 1);
-                    Log.i("address", addressList.toString());
-                    if(addressList.size() > 0) {
-                        LatLng latLng = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
-                        googleMap.addMarker(new MarkerOptions().position(latLng).title(location));
-                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Toast.makeText(getActivity(), "Please enter a location", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        // Set onclick listener to search place button
+//        imageViewSearch.setOnClickListener(view1 -> {
+//            String location = locationInput.getText().toString();
+//            if (location != null && !location.equals("")) {
+//                List<Address> addressList = null;
+//                Geocoder geocoder = new Geocoder(getActivity());
+//                try {
+//                    addressList = geocoder.getFromLocationName(location, 1);
+//                    Log.i("address", addressList.toString());
+//                    if(addressList.size() > 0) {
+//                        LatLng latLng = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
+//                        googleMap.addMarker(new MarkerOptions().position(latLng).title(location));
+//                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            } else {
+//                Toast.makeText(getActivity(), "Please enter a location", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         databaseReference = firebaseDatabase.getReference();
 
