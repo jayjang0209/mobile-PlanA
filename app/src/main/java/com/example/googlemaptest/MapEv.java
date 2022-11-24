@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -27,6 +28,10 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.StrokeStyle;
+import com.google.android.gms.maps.model.StyleSpan;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -170,9 +175,11 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
             }
         });
 
-
-
-
+        ArrayList<LatLng> test = new ArrayList<>();
+        test.add(new LatLng(49.28939745554665, -123.13859027110587));
+        test.add(new LatLng(49.26368940603907, -123.10090604516235));
+        test.add(new LatLng(49.26319467737089, -123.1006457601197));
+        test.add(new LatLng(49.26022843606977, -123.04507328195866));
     }
     
     @Override
@@ -202,10 +209,19 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         if (savedMarkers.contains(marker.getPosition())) {
             savedMarkers.remove(marker.getPosition());
             marker.setIcon(BitmapDescriptorFactory.fromBitmap(chargerMarkerIcon));
+            drawPath();
         } else {
             savedMarkers.add(marker.getPosition());
             marker.setIcon(BitmapDescriptorFactory.fromBitmap(savedMarkerIcon));
+            drawPath();
         }
         Toast.makeText(getActivity(), "infoWindow clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    public void drawPath() {
+        Polyline line = googleMapRef.addPolyline(new PolylineOptions()
+                .addAll(savedMarkers)
+        );
+        line.setColor(getResources().getColor(R.color.main_light_blue));
     }
 }
