@@ -161,7 +161,7 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
                     Objects.requireNonNull(googleMap.addMarker(new MarkerOptions()
                                     .position(station)
                                     .title(address)
-                                    .snippet("Connector: " + connectorType + '\n' + "Chargers: " + String.valueOf(chargerNumber))))
+                                    .snippet("Connector: " + connectorType)))
                             .setIcon(BitmapDescriptorFactory.fromBitmap(chargerMarkerIcon));
                 }
                 Log.i("Stations", String.valueOf(numStations));
