@@ -7,13 +7,22 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
@@ -21,17 +30,32 @@ public class EvTripPlanner extends AppCompatActivity implements NavigationView.O
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    // CURRENT USER ID
+    String userId;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ev_trip_planner);
 
+        // get the instance of the Firebase database
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        // get the reference to the JSON tree
+        databaseReference = firebaseDatabase.getReference();
+
 //        BottomNavigationView bottomNavigationView= findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.ev_trip_planner_fragment_container, new MapEv()).commit();
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
+
+        // Get current user
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
+
+        setHeaderTitle();
 
         setSupportActionBar(toolbar);
         //disable Title of toolbar
@@ -74,5 +98,29 @@ public class EvTripPlanner extends AppCompatActivity implements NavigationView.O
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
+    }
+
+    private void setHeaderTitle() {
+        databaseReference = firebaseDatabase.getReference();
+        databaseReference.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    if (user != null && userId.equals(snapshot.getKey())) {
+                        String name = user.getName();
+                        String userFirstName = name.split(" ")[0];
+                        // Set current user's name on the header title
+                        View headerView = navigationView.getHeaderView(0);
+                        TextView navUsername = headerView.findViewById(R.id.header_title);
+                        navUsername.setText(String.format("Hi %s 👋", userFirstName));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 }

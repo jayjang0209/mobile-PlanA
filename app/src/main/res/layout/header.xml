@@ -3,11 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="150dp"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center_vertical"
+    android:paddingHorizontal="20dp">
+
     <TextView
+        android:id="@+id/header_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Placeholder"
+        android:text="@string/welcome_to_plana"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/main_light_blue"
     />
 
 </LinearLayout>
