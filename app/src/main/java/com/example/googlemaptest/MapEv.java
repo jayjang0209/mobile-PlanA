@@ -45,13 +45,14 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener
         ,GoogleMap.OnInfoWindowClickListener {
 
-    public static final float DEFAULT_RANGE = 450000;
+    public static final float DEFAULT_RANGE = 450000; // in meters 450km
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 //    ImageView imageViewSearch;
 //    EditText locationInput;
     String userId;
+    float evRange;
     GoogleMap googleMapRef;
     ArrayList<Circle> circles;
     Bitmap chargerMarkerIcon;
@@ -74,7 +75,9 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
 
         // get userId
         userId = getArguments().getString("uid");
+        evRange = getArguments().getFloat("evRange");
         Log.i("userId in MapEv", userId);
+        Log.i("hello", String.valueOf(evRange));
 
         // get the instance of the Firebase database
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -105,7 +108,6 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         Bitmap bSaved = bitmapdrawSaved.getBitmap();
         savedMarkerIcon = Bitmap.createScaledBitmap(bSaved, 85, 85, false);
 
-
         return view;
     }
 
@@ -122,6 +124,7 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         savedEvStations = new ArrayList<>();
         mapPolyline = googleMap.addPolyline(new PolylineOptions());
 
+        // Set click listeners
         googleMap.setOnMarkerClickListener(this);
         googleMap.setOnInfoWindowClickListener(this);
 
@@ -161,19 +164,16 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
                     double lat = Double.parseDouble(String.valueOf(snapshot.child("Latitude").getValue()));
                     double lon = Double.parseDouble(String.valueOf(snapshot.child("Longitude").getValue()));
                     String address = String.valueOf(snapshot.child("Street Address").getValue());
+                    String city = String.valueOf(snapshot.child("City").getValue());
+                    String state = String.valueOf(snapshot.child("State").getValue());
+                    String full_address = address + ", " + city + ", " + state;
                     String connectorType = String.valueOf(snapshot.child("EV Connector Types").getValue());
                     LatLng station = new LatLng(lat, lon);
-                    int chargerNumber;
-                    try {
-                        chargerNumber = Integer.parseInt(String.valueOf(snapshot.child("EV Level2 EVSE Num").getValue()));
-                    } catch (Exception e) {
-                        chargerNumber = Integer.parseInt(String.valueOf(snapshot.child("EV DC Fast Count").getValue()));
-                    }
 
                     // Add markers to the googleMap
                     Objects.requireNonNull(googleMap.addMarker(new MarkerOptions()
                                     .position(station)
-                                    .title(address)
+                                    .title(full_address)
                                     .snippet("Connector: " + connectorType)))
                             .setIcon(BitmapDescriptorFactory.fromBitmap(chargerMarkerIcon));
                 }
@@ -190,7 +190,7 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
     
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
-        Toast.makeText(getContext(), marker.getTitle(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), marker.getTitle(), Toast.LENGTH_SHORT).show();
         Log.i("Circle center", String.valueOf(marker.getPosition()));
 
         // remove previous circles
@@ -202,7 +202,11 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         // draw a circle around the marker
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(marker.getPosition());
-        circleOptions.radius(DEFAULT_RANGE);
+        if (evRange == 0) {
+            circleOptions.radius(DEFAULT_RANGE);
+        } else {
+            circleOptions.radius(evRange * 1000); // convert km to m
+        }
         circleOptions.strokeColor(0xCC4c8bf5);
         circleOptions.strokeWidth(5);
         circleOptions.fillColor(0x4000A7E1);
@@ -216,14 +220,16 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         LatLng latLng = marker.getPosition();
         String address = marker.getTitle();
 
+        // Remove marker from the saved marker list
         if (savedMarkers.contains(marker.getPosition())) {
             savedMarkers.remove(marker.getPosition());
             marker.setIcon(BitmapDescriptorFactory.fromBitmap(chargerMarkerIcon));
             drawPath();
 
             savedEvStations.removeIf(e -> e.getAddress().equals(address));
+            Toast.makeText(getActivity(), address + " removed", Toast.LENGTH_SHORT).show();
             Log.i("evStation", String.valueOf(savedMarkers.size()));
-        } else {
+        } else { // Add marker to the saved marker list
             savedMarkers.add(marker.getPosition());
             marker.setIcon(BitmapDescriptorFactory.fromBitmap(savedMarkerIcon));
             drawPath();
@@ -232,9 +238,10 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
             EvStation evStation = new EvStation(latLng.latitude, latLng.latitude, address);
             Log.i("evStation", evStation.toString());
             savedEvStations.add(evStation);
+            Toast.makeText(getActivity(), address + " added", Toast.LENGTH_SHORT).show();
             Log.i("evStation", String.valueOf(savedMarkers.size()));
         }
-        Toast.makeText(getActivity(), "infoWindow clicked", Toast.LENGTH_SHORT).show();
+
     }
 
     public void drawPath() {
