@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ public class SignIn extends AppCompatActivity {
     private EditText edtEmail, edtPassword;
     private String email, password;
     private String userId;
+    private float evRange;
 
     public SignIn() {}
 
@@ -64,9 +66,16 @@ public class SignIn extends AppCompatActivity {
                     if (user != null && email.equals(user.getEmail()) && password.equals(user.getPassword())) {
                         match = true;
                         userId = snapshot.getKey();
+                        try {
+                            evRange = Float.parseFloat(String.valueOf(snapshot.child("ev").child("range").getValue()));
+                        } catch (Exception e) {
+                            evRange = 0;
+                        }
+                        Log.i("hello", String.valueOf(evRange));
                         Toast.makeText(SignIn.this, "Logged In!", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(SignIn.this, EvTripPlanner.class);
                         intent.putExtra("userId", userId);
+                        intent.putExtra("evRange", evRange);
                         startActivity(intent);
                     }
                 }

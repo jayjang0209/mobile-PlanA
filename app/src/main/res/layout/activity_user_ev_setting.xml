@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,106 +9,232 @@
         android:id="@+id/setEvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your Electric Vehicle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="100dp"
+        android:text="Your Electric Vehicle"
         android:textColor="#1e3a8a"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.086" />
+
 
     <TextView
         android:id="@+id/numDataObject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="20dp"
-        android:layout_alignEnd="@id/setEvTitle"
         android:layout_above="@id/evSpinner"
+        android:layout_alignEnd="@id/setEvTitle"
+        android:text="Number of models: 0"
         android:textColor="#1e3a8a"
-        android:textSize="15sp" />
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.855"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.386" />
 
-    <Spinner
-        android:id="@+id/evSpinner"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/setEvTitle"/>
+    <View
+        android:layout_width="320dp"
+        android:layout_height="2dp"
+        android:background="#00A7E1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.563" />
 
-    <TextView
-        android:id="@+id/manufacturerTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_alignStart="@id/evSpinner"
-        android:layout_marginTop="80dp"
-        android:layout_below="@id/evSpinner"
-        android:textSize="20sp"
-        android:text="Manufacturer:"/>
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="334dp"
+        android:layout_height="148dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.584"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.758">
 
-    <TextView
-        android:id="@+id/manufacturer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginStart="20dp"
-        android:layout_below="@id/evSpinner"
-        android:layout_toEndOf="@id/manufacturerTitle"
-        android:textSize="20sp"
-        android:text="Manufacturer:"/>
+        <TextView
+            android:id="@+id/modelTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Model:"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.137"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.616" />
 
-    <TextView
-        android:id="@+id/modelTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="35dp"
-        android:layout_alignStart="@id/manufacturerTitle"
-        android:layout_below="@id/manufacturerTitle"
-        android:textSize="20sp"
-        android:text="Model:"/>
+        <TextView
+            android:id="@+id/model"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@id/modelTitle"
+            android:text="Model"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.548"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.62" />
 
-    <TextView
-        android:id="@+id/model"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_below="@id/manufacturerTitle"
-        android:layout_toEndOf="@id/manufacturerTitle"
-        android:textSize="20sp"
-        android:text="Model"/>
+        <TextView
+            android:id="@+id/manufacturerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/modelTitle"
+            android:layout_alignStart="@id/modelTitle"
+            android:layout_marginTop="25dp"
+            android:text="Manufacturer:"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.168"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.68" />
 
-    <TextView
-        android:id="@+id/rangeTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp"
-        android:layout_alignStart="@id/manufacturerTitle"
-        android:layout_below="@id/modelTitle"
-        android:textSize="20sp"
-        android:text="Range(km):"/>
+        <TextView
+            android:id="@+id/manufacturer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/model"
+            android:layout_alignLeft="@id/model"
+            android:layout_marginTop="30dp"
+            android:text="Manufacturer:"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.638"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.683" />
 
-    <TextView
-        android:id="@+id/range"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="236dp"
-        android:layout_marginStart="20dp"
-        android:layout_below="@id/modelTitle"
-        android:layout_toEndOf="@id/manufacturerTitle"
-        android:textSize="20sp"
-        android:text="Range"/>
+        <TextView
+            android:id="@+id/rangeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/manufacturerTitle"
+            android:layout_alignStart="@id/manufacturerTitle"
+            android:layout_marginTop="25dp"
+            android:text="Range(km):"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.155"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.74" />
+
+        <TextView
+            android:id="@+id/range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/manufacturer"
+            android:layout_alignLeft="@id/model"
+            android:layout_marginTop="30dp"
+            android:layout_toEndOf="@id/manufacturerTitle"
+            android:text="Range"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.55"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.742" />
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/btnCreateEVDriverAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rangeTitle"
         android:layout_centerHorizontal="true"
         android:backgroundTint="#60a5fa"
         android:paddingHorizontal="30dp"
         android:text="@string/create_account"
-        android:textSize="15sp" />
-</RelativeLayout>
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.913" />
+
+    <Spinner
+        android:id="@+id/spinnerMfgr"
+        android:layout_width="179dp"
+        android:layout_height="27dp"
+        android:entries="@array/manufacturers"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.823"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.275" />
+
+    <TextView
+        android:id="@+id/textviewSelectModel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Model: "
+        android:textSize="20sp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.139"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.375" />
+
+    <Spinner
+        android:id="@+id/evSpinner"
+        android:layout_width="324dp"
+        android:layout_height="37dp"
+        android:layout_below="@id/setEvTitle"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.551"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.438" />
+
+    <TextView
+        android:id="@+id/textviewSelectManufacturer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Manufacturer: "
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.171"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.275" />
+
+    <ImageView
+        android:id="@+id/evCar"
+        android:layout_width="49dp"
+        android:layout_height="33dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.149"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.541"
+        app:srcCompat="@drawable/car_roof_icon" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

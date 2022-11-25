@@ -41,6 +41,21 @@
         <item>CHAdeMO</item>
         <item>Tesla</item>
     </string-array>
+
+    <string-array name="manufacturers">
+        <item>Tesla</item>
+        <item>Porsche</item>
+        <item>Lucid</item>
+        <item>Hyundai</item>
+        <item>Audi</item>
+        <item>Rivian</item>
+        <item>BMW</item>
+        <item>Kia</item>
+        <item>Chevrolet</item>
+        <item>Volkswagen</item>
+        <item>Nissan</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
