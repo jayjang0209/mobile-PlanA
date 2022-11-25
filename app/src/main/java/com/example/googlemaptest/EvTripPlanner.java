@@ -28,6 +28,7 @@ public class EvTripPlanner extends AppCompatActivity implements NavigationView.O
     Toolbar toolbar;
     // CURRENT USER ID
     String userId;
+    float evRange;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
@@ -50,10 +51,11 @@ public class EvTripPlanner extends AppCompatActivity implements NavigationView.O
         // Get current user
         Intent intent = getIntent();
         userId = intent.getStringExtra("userId");
-
+        evRange = intent.getFloatExtra("evRange", 0);
         // Inflate fragment and send userId to it
         Bundle bundle = new Bundle();
         bundle.putString("uid", userId);
+        bundle.putFloat("evRange", evRange);
         MapEv mapEv = new MapEv();
         mapEv.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.ev_trip_planner_fragment_container, mapEv).commit();
