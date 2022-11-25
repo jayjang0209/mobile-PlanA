@@ -21,6 +21,7 @@ public class SignIn extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private EditText edtEmail, edtPassword;
     private String email, password;
+    private String userId;
 
     public SignIn() {}
 
@@ -61,12 +62,11 @@ public class SignIn extends AppCompatActivity {
                     User user = snapshot.getValue(User.class);
 
                     if (user != null && email.equals(user.getEmail()) && password.equals(user.getPassword())) {
-                        System.out.println("Typed in: " + email + password);
-                        System.out.println("Searched: " + user.getEmail() + user.getPassword());
-
                         match = true;
+                        userId = snapshot.getKey();
                         Toast.makeText(SignIn.this, "Logged In!", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(SignIn.this, EvTripPlanner.class);
+                        intent.putExtra("userId", userId);
                         startActivity(intent);
                     }
                 }
