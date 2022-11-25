@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserEvSetting extends AppCompatActivity {
     private TextView numObject;
@@ -35,6 +37,7 @@ public class UserEvSetting extends AppCompatActivity {
     private TextView model;
     private TextView evRange;
     private Spinner evSpinner;
+    private String manufacturerCode;
     private ArrayList<Ev> evs;
     private Ev ev;
     private DatabaseReference databaseReference;
@@ -42,6 +45,7 @@ public class UserEvSetting extends AppCompatActivity {
     private String email;
     private String password;
     private User user;
+
 
     private final String url = "https://developer.nrel.gov/api/vehicles/v1/light_duty_automobiles.json";
     private final String key = "oeesoXp4Qsx0c1ceqlKtbrFEB7yRujpaTakm9Zul";
@@ -58,14 +62,31 @@ public class UserEvSetting extends AppCompatActivity {
         evRange =findViewById(R.id.range);
         evSpinner = (Spinner) findViewById(R.id.evSpinner);
         evs = new ArrayList<>();
+        Spinner manufacturerSpinner = (Spinner) findViewById(R.id.spinnerMfgr);
+        manufacturerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Show the selected item
+                String selected = parent.getItemAtPosition(position).toString();
+                manufacturerCode = String.valueOf(mapManufacturer(selected));
 
-        UserEvSetting.AsyncTaskRunner runner = new UserEvSetting.AsyncTaskRunner();
-        String modelYear = "2022";
-        // Sample Endpoint
-        // https://developer.nrel.gov/api/vehicles/v1/light_duty_automobiles.json?api_key=oeesoXp4Qsx0c1ceqlKtbrFEB7yRujpaTakm9Zul&current=true&fuel_id=41&model_year=2022
-        String endPoint = url + "?api_key=" + key + "&current=true&fuel_id=" + fuel_id + "&model_year=" + modelYear;
-        Log.i("endpoint", endPoint);
-        runner.execute(endPoint);
+                UserEvSetting.AsyncTaskRunner runner = new UserEvSetting.AsyncTaskRunner();
+                String modelYear = "2022";
+                // Sample Endpoint
+                // https://developer.nrel.gov/api/vehicles/v1/light_duty_automobiles.json?api_key=oeesoXp4Qsx0c1ceqlKtbrFEB7yRujpaTakm9Zul&current=true&fuel_id=41&model_year=2022
+                String endPoint = url + "?api_key=" + key + "&current=true&fuel_id=" + fuel_id + "&model_year=" + modelYear + "&manufacturer_id=" + manufacturerCode;
+                Log.i("endpoint", endPoint);
+                runner.execute(endPoint);
+            }
+
+            // Override the onNothingSelected method defined in AdapterView.OnItemSelectedListener
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Toast.makeText(getApplicationContext(), "Please select manufacturer", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
 
 
         Button authenticate = findViewById(R.id.btnCreateEVDriverAccount);
@@ -107,10 +128,10 @@ public class UserEvSetting extends AppCompatActivity {
                         JSONObject jsonObjectCount = response.getJSONObject("metadata");
                         Log.d("Response-result", jsonObjectCount.toString());
                         String numberOfObject = jsonObjectCount.getJSONObject("resultset").getString("count");
-                        numObject.setText("number of models: " + numberOfObject);
+                        numObject.setText("Number of models: " + numberOfObject);
                         JSONArray jsonArrayEvs = response.getJSONArray("result");
                         Log.d("Response-total-evs-number", String.valueOf(jsonArrayEvs.length()));
-
+                        evs.clear();
                         // add elements in json array to spinner
                         for (int i = 0; i < jsonArrayEvs.length(); i++) {
                             JSONObject jsonObject = jsonArrayEvs.getJSONObject(i);
@@ -119,6 +140,7 @@ public class UserEvSetting extends AppCompatActivity {
                             String model_year = jsonObject.getString("model_year");
                             String range = jsonObject.getString("electric_range");
                             // Instantiate single Ev object
+
                             Ev ev = new Ev();
                             ev.setManufacturer(make);
                             ev.setModel(model);
@@ -186,5 +208,21 @@ public class UserEvSetting extends AppCompatActivity {
                     startActivity(signInIntent);
                 })
                 .addOnFailureListener(e -> Toast.makeText(UserEvSetting.this, e.toString(), Toast.LENGTH_LONG).show());
+    }
+
+    private int mapManufacturer(String manufacturer) {
+        HashMap<String, Integer> manufacturerMap = new HashMap<>();
+        manufacturerMap.put("Audi", 377);
+        manufacturerMap.put("BMW", 211);
+        manufacturerMap.put("Lucid", 469);
+        manufacturerMap.put("Hyundai", 351);
+        manufacturerMap.put("Kia", 361);
+        manufacturerMap.put("Porsche", 391);
+        manufacturerMap.put("Tesla", 237);
+        manufacturerMap.put("Rivian",470);
+        manufacturerMap.put("Nissan", 217);
+        manufacturerMap.put("Volkswagen", 347);
+        manufacturerMap.put("Chevrolet", 215);
+        return manufacturerMap.get(manufacturer);
     }
 }
