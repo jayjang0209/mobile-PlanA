@@ -42,7 +42,7 @@ public class EvTripPlanner extends AppCompatActivity implements NavigationView.O
         databaseReference = firebaseDatabase.getReference();
 
 //        BottomNavigationView bottomNavigationView= findViewById(R.id.bottom_navigation);
-        getSupportFragmentManager().beginTransaction().replace(R.id.ev_trip_planner_fragment_container, new MapEv()).commit();
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
@@ -50,6 +50,13 @@ public class EvTripPlanner extends AppCompatActivity implements NavigationView.O
         // Get current user
         Intent intent = getIntent();
         userId = intent.getStringExtra("userId");
+
+        // Inflate fragment and send userId to it
+        Bundle bundle = new Bundle();
+        bundle.putString("uid", userId);
+        MapEv mapEv = new MapEv();
+        mapEv.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.ev_trip_planner_fragment_container, mapEv).commit();
 
         setHeaderTitle();
 
@@ -62,6 +69,7 @@ public class EvTripPlanner extends AppCompatActivity implements NavigationView.O
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+
 //        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
 //            @Override
 //            public boolean onNavigationItemSelected(@NonNull MenuItem item) {

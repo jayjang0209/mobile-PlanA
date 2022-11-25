@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -48,8 +49,9 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    ImageView imageViewSearch;
-    EditText locationInput;
+//    ImageView imageViewSearch;
+//    EditText locationInput;
+    String userId;
     GoogleMap googleMapRef;
     ArrayList<Circle> circles;
     Bitmap chargerMarkerIcon;
@@ -57,7 +59,7 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
     ArrayList<LatLng> savedMarkers;
     ArrayList<EvStation> savedEvStations;
     Polyline mapPolyline;
-
+    Button saveButton;
 
     @Nullable
     @Override
@@ -70,6 +72,9 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
 //        imageViewSearch = view.findViewById(R.id.locationSearch);
 //        locationInput = view.findViewById(R.id.locationInput);
 
+        // get userId
+        userId = getArguments().getString("uid");
+        Log.i("userId in MapEv", userId);
 
         // get the instance of the Firebase database
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -80,6 +85,14 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mapEv);
 
+        // Initialize save button and its listener
+        saveButton = view.findViewById(R.id.save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.i("Clicked save", "Clicked save");
+                saveStationsToDB();
+            }
+        });
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
@@ -191,7 +204,7 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         circleOptions.center(marker.getPosition());
         circleOptions.radius(DEFAULT_RANGE);
         circleOptions.strokeColor(0xCC4c8bf5);
-        circleOptions.strokeWidth(10);
+        circleOptions.strokeWidth(5);
         circleOptions.fillColor(0x4000A7E1);
         Circle rangeCircle = googleMapRef.addCircle(circleOptions);
         circles.add(rangeCircle);
@@ -237,7 +250,14 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
 
     public void saveStationsToDB() {
         // evStation contains ( Double Double latitude, Double longitude,  String address)
-        // Feel free to change anything :)
-        ArrayList<EvStation> savedObjets = savedEvStations;
+        // get the instance of the Firebase database
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        // get the reference to the JSON tree
+        databaseReference = firebaseDatabase.getReference();
+
+        ArrayList<EvStation> savedObjects = savedEvStations;
+
+        databaseReference.child("Trips").child("creatorId").setValue(userId);
+        databaseReference.child("Trips").child("Pins").setValue(savedObjects);
     }
 }

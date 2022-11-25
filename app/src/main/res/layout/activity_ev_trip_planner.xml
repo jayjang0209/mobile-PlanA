@@ -29,42 +29,6 @@ tools:context=".MainActivity">
         app:headerLayout="@layout/header"
         app:menu="@menu/menu" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="580dp"
-        android:backgroundTint="@android:color/transparent"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="0dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-            <!--                <SearchView android-->
-            <EditText
-                android:id="@+id/search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:drawableStart="@drawable/ic_baseline_search_24"
-                android:drawablePadding="4dp"
-                android:hint="@string/search_hint"
-                android:inputType="text"
-                android:paddingVertical="8dp"
-                android:paddingRight="12dp" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#00A7E1"
-                android:text="@string/save" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
 
