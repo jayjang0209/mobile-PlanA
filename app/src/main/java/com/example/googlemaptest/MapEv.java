@@ -52,8 +52,9 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    //    ImageView imageViewSearch;
-//    EditText locationInput;
+
+    ImageView imageViewSearch;
+    EditText locationInput;
     String userId;
     float evRange;
     GoogleMap googleMapRef;
@@ -74,8 +75,8 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
 
         View view = inflater.inflate(R.layout.fragment_map_ev, container, false);
 
-//        imageViewSearch = view.findViewById(R.id.locationSearch);
-//        locationInput = view.findViewById(R.id.locationInput);
+        imageViewSearch = view.findViewById(R.id.locationSearch);
+        locationInput = view.findViewById(R.id.locationInput);
 
         // get userId
         userId = getArguments().getString("uid");
@@ -135,27 +136,27 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         googleMap.setOnInfoWindowClickListener(this);
         googleMap.setOnMapLongClickListener(this);
 
-//        // Set onclick listener to search place button
-//        imageViewSearch.setOnClickListener(view1 -> {
-//            String location = locationInput.getText().toString();
-//            if (location != null && !location.equals("")) {
-//                List<Address> addressList = null;
-//                Geocoder geocoder = new Geocoder(getActivity());
-//                try {
-//                    addressList = geocoder.getFromLocationName(location, 1);
-//                    Log.i("address", addressList.toString());
-//                    if(addressList.size() > 0) {
-//                        LatLng latLng = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
-//                        googleMap.addMarker(new MarkerOptions().position(latLng).title(location));
-//                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            } else {
-//                Toast.makeText(getActivity(), "Please enter a location", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        // Set onclick listener to search place button
+        imageViewSearch.setOnClickListener(view1 -> {
+            String location = locationInput.getText().toString();
+            if (location != null && !location.equals("")) {
+                List<Address> addressList = null;
+                Geocoder geocoder = new Geocoder(getActivity());
+                try {
+                    addressList = geocoder.getFromLocationName(location, 1);
+                    Log.i("address", addressList.toString());
+                    if(addressList.size() > 0) {
+                        LatLng latLng = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
+                        googleMap.addMarker(new MarkerOptions().position(latLng).title(location));
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(getActivity(), "Please enter a location", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         databaseReference = firebaseDatabase.getReference();
 
@@ -277,8 +278,7 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
 
         ArrayList<EvStation> savedObjects = savedEvStations;
 
-        databaseReference.child("Trips").child("creatorId").setValue(userId);
-        databaseReference.child("Trips").child("Pins").setValue(savedObjects);
+        databaseReference.child("Trips").child(userId).push().setValue(savedObjects);
     }
 
 
