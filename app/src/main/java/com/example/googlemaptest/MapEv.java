@@ -39,17 +39,20 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class MapEv extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener
-        ,GoogleMap.OnInfoWindowClickListener {
+        ,GoogleMap.OnInfoWindowClickListener,
+        GoogleMap.OnMapLongClickListener
+{
 
     public static final float DEFAULT_RANGE = 450000; // in meters 450km
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-//    ImageView imageViewSearch;
+    //    ImageView imageViewSearch;
 //    EditText locationInput;
     String userId;
     float evRange;
@@ -57,6 +60,7 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
     ArrayList<Circle> circles;
     Bitmap chargerMarkerIcon;
     Bitmap savedMarkerIcon;
+    Bitmap mapPinMarkerIcon;
     ArrayList<LatLng> savedMarkers;
     ArrayList<EvStation> savedEvStations;
     Polyline mapPolyline;
@@ -107,7 +111,9 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         BitmapDrawable bitmapdrawSaved = (BitmapDrawable) getResources().getDrawable( R.drawable.ev_saved_marker_icon);
         Bitmap bSaved = bitmapdrawSaved.getBitmap();
         savedMarkerIcon = Bitmap.createScaledBitmap(bSaved, 85, 85, false);
-
+        BitmapDrawable bitmapdrawLocation = (BitmapDrawable) getResources().getDrawable( R.drawable.icons8_map_pin_48);
+        Bitmap bLocation = bitmapdrawLocation.getBitmap();
+        mapPinMarkerIcon = Bitmap.createScaledBitmap(bLocation, 85, 85, false);
         return view;
     }
 
@@ -127,6 +133,7 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         // Set click listeners
         googleMap.setOnMarkerClickListener(this);
         googleMap.setOnInfoWindowClickListener(this);
+        googleMap.setOnMapLongClickListener(this);
 
 //        // Set onclick listener to search place button
 //        imageViewSearch.setOnClickListener(view1 -> {
@@ -187,7 +194,7 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         });
 
     }
-    
+
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
 //        Toast.makeText(getContext(), marker.getTitle(), Toast.LENGTH_SHORT).show();
@@ -219,6 +226,7 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
     public void onInfoWindowClick(@NonNull Marker marker) {
         LatLng latLng = marker.getPosition();
         String address = marker.getTitle();
+        String type = marker.getSnippet();
 
         // Remove marker from the saved marker list
         if (savedMarkers.contains(marker.getPosition())) {
@@ -231,11 +239,16 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
             Log.i("evStation", String.valueOf(savedMarkers.size()));
         } else { // Add marker to the saved marker list
             savedMarkers.add(marker.getPosition());
-            marker.setIcon(BitmapDescriptorFactory.fromBitmap(savedMarkerIcon));
+            if (marker.getSnippet().equals("non-station")) {
+                marker.setIcon(BitmapDescriptorFactory.fromBitmap(mapPinMarkerIcon));
+            } else {
+                marker.setIcon(BitmapDescriptorFactory.fromBitmap(savedMarkerIcon));
+            }
+
             drawPath();
 
             // Add evStation object to the list.
-            EvStation evStation = new EvStation(latLng.latitude, latLng.latitude, address);
+            EvStation evStation = new EvStation(latLng.latitude, latLng.latitude, address, type);
             Log.i("evStation", evStation.toString());
             savedEvStations.add(evStation);
             Toast.makeText(getActivity(), address + " added", Toast.LENGTH_SHORT).show();
@@ -266,5 +279,22 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
 
         databaseReference.child("Trips").child("creatorId").setValue(userId);
         databaseReference.child("Trips").child("Pins").setValue(savedObjects);
+    }
+
+
+    @Override
+    public void onMapLongClick(@NonNull LatLng latLng) {
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            googleMapRef.addMarker(new MarkerOptions().position(latLng).title(address).snippet("non-station"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
