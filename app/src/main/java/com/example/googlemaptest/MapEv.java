@@ -239,7 +239,7 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
             Log.i("evStation", String.valueOf(savedMarkers.size()));
         } else { // Add marker to the saved marker list
             savedMarkers.add(marker.getPosition());
-            if (marker.getSnippet().equals("non-station")) {
+            if (marker.getSnippet().equals("Selected Location")) {
                 marker.setIcon(BitmapDescriptorFactory.fromBitmap(mapPinMarkerIcon));
             } else {
                 marker.setIcon(BitmapDescriptorFactory.fromBitmap(savedMarkerIcon));
@@ -291,7 +291,7 @@ public class MapEv extends Fragment implements OnMapReadyCallback,
         try {
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            googleMapRef.addMarker(new MarkerOptions().position(latLng).title(address).snippet("non-station"));
+            googleMapRef.addMarker(new MarkerOptions().position(latLng).title(address).snippet("Selected Location"));
         } catch (IOException e) {
             e.printStackTrace();
         }
