@@ -7,10 +7,15 @@ public class EvStation {
     public Double longitude;
     public String address;
 
-    public EvStation(Double lat, Double lng, String addr) {
+
+
+    public String type;
+
+    public EvStation(Double lat, Double lng, String addr, String chargerType) {
         latitude = lat;
         longitude = lng;
         address = addr;
+        type = chargerType;
     }
 
     public Double getLatitude() {
@@ -37,25 +42,8 @@ public class EvStation {
         this.address = address;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EvStation evStation = (EvStation) o;
-        return Objects.equals(latitude, evStation.latitude) && Objects.equals(longitude, evStation.longitude) && Objects.equals(address, evStation.address);
-    }
+    public String getType() { return type; }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(latitude, longitude, address);
-    }
+    public void setType(String type) { this.type = type; }
 
-    @Override
-    public String toString() {
-        return "EvStation{" +
-                "latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", address='" + address + '\'' +
-                '}';
-    }
 }
