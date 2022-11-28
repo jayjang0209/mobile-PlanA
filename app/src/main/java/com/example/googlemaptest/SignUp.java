@@ -83,6 +83,12 @@ public class SignUp extends AppCompatActivity {
         CheckBox checkBox = findViewById(R.id.is_ev_driver);
         btnSignup = findViewById(R.id.btnCreateAccount);
 
+        btnSignup.setOnClickListener(view -> {
+            if (checkFields()) {
+                addData();
+            }
+        });
+
         checkBox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
                 btnSignup.setText(R.string.next);
