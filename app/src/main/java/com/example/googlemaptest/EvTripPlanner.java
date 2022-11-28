@@ -114,6 +114,9 @@ public class EvTripPlanner extends AppCompatActivity implements NavigationView.O
             case R.id.cities:
                 break;
             case R.id.budget:
+                intent = new Intent(EvTripPlanner.this, Budget.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
                 break;
             case R.id.signOut:
                 intent = new Intent(EvTripPlanner.this, MainActivity.class);
