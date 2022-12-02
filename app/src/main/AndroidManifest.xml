@@ -35,12 +35,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".LandingPage"
-            android:exported="false" />
-        <activity
-            android:name=".EvCharger"
-            android:exported="true" />
-        <activity
             android:name=".SignUp"
             android:exported="false" />
         <activity
@@ -50,7 +44,9 @@
             android:name=".SavedRoutes"
             android:exported="true" />
 
-
+    <activity
+            android:name=".Budget"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
