@@ -15,11 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 
-public class FragmentRoutes extends Fragment {
+public class FragmentStops extends Fragment {
 
     RecyclerView recyclerView;
     ArrayList<String> routes;
-    ArrayList<String> routes_end;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
