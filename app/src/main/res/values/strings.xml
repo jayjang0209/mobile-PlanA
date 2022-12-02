@@ -67,4 +67,12 @@
     <string name="sign_out">Sign Out</string>
     <string name="welcome_to_plana">Welcome to PlanA</string>
     <string name="user_headshot">User Headshot</string>
+    <string name="travel_budget">Travel Budget</string>
+    <string name="transportation">Transportation</string>
+    <string name="amount">Amount</string>
+    <string name="flight">Flight</string>
+    <string name="accommodation">Accommodation</string>
+    <string name="food">Food</string>
+    <string name="plan_your_budget">Plan your budget</string>
+    <string name="apply">Apply</string>
 </resources>
